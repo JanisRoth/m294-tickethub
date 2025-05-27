@@ -3,6 +3,8 @@ import { useState } from 'react'
 import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
 import Dashboard from './pages/Dashboard'
+import SellTicket from './pages/SellTicket'
+import TicketShop from './pages/TicketShop'
 import './App.css'
 
 function App() {
@@ -34,6 +36,8 @@ function App() {
         />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/sellticket" element={<SellTicket />} />
+        <Route path="/ticketshop" element={<TicketShop />} />
       </Routes>
     </BrowserRouter>
   )

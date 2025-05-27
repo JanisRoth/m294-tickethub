@@ -21,21 +21,21 @@ export default function RegisterForm() {
   }
 
   return (
-    <form onSubmit={handleRegister}>
+    <form onSubmit={handleRegister} className="form-fields">
       <input
         type="email"
         placeholder="E-Mail"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-      /><br />
+      />
       <input
         type="password"
         placeholder="Passwort"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
-      /><br />
+      />
       <button type="submit">Registrieren</button>
       {message && <p>{message}</p>}
     </form>

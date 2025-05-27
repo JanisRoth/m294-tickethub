@@ -1,42 +1,109 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #1e1e1e;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.auth-logo {
+  width: 220px;
+  margin-bottom: 2rem;
+}
+
+.auth-box {
+  background-color: #2c2c2c;
   padding: 2rem;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.auth-box h2 {
+  color: white;
+  margin-bottom: 1.5rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.auth-box input {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #323b4c;
+  color: white;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  height: 48px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+
+.auth-box input::placeholder {
+  color: #ccc;
 }
 
-.card {
-  padding: 2em;
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.read-the-docs {
-  color: #888;
+.auth-box button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #f15a29;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 0.8rem;
+  transition: background 0.2s ease;
+}
+
+.auth-box button:hover {
+  background-color: #d9481e;
+}
+
+.auth-box:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 30px rgba(255, 87, 34, 0.03);
+}
+
+.switch {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.link-button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #f15a29;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  background-color: #d9481e;
 }

@@ -9,29 +9,26 @@ export default function LoginForm() {
   const handleLogin = async (e) => {
     e.preventDefault()
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-
-    if (error) {
-      setMessage('Login fehlgeschlagen: ' + error.message)
-    } else {
-      setMessage('Login erfolgreich')
-    }
+    setMessage(error ? 'Login fehlgeschlagen' : 'Login erfolgreich')
   }
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} className="form-fields">
       <input
         type="email"
         placeholder="E-Mail"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-      /><br />
+        required
+      />
       <input
         type="password"
         placeholder="Passwort"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-      /><br />
-      <button type="submit">Einloggen</button>
+        required
+      />
+      <button type="submit">SIGN IN</button>
       {message && <p>{message}</p>}
     </form>
   )

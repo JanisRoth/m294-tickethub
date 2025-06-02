@@ -6,15 +6,32 @@ import './SellTicket.css';
 
 export default function SellTickets() {
   const [openTickets, setOpenTickets] = useState([]);
-  const [soldTickets] = useState([]);
+  const [soldTickets, setSoldTickets] = useState([]);
   const [earned, setEarned] = useState(0);
   const [soldCount, setSoldCount] = useState(0);
   const [showForm, setShowForm] = useState(false);
+  const [currentUsername, setCurrentUsername] = useState('User');
 
   useEffect(() => {
     fetchTickets();
     fetchStats();
+    fetchUsername();
   }, []);
+
+  const fetchUsername = async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (!error && data?.user?.id) {
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .select('username')
+        .eq('id', data.user.id)
+        .single();
+
+      if (!userError && userData) {
+        setCurrentUsername(userData.username);
+      }
+    }
+  };
 
   const fetchTickets = async () => {
     const user = await supabase.auth.getUser();
@@ -35,13 +52,19 @@ export default function SellTickets() {
 
     const { data, error } = await supabase
       .from('purchases')
-      .select('price')
+      .select('price, ticket_id, tickets(event_name, date, location)')
       .eq('seller_id', userId);
 
     if (!error && data) {
       const total = data.reduce((acc, cur) => acc + (cur.price || 0), 0);
       setEarned(total);
       setSoldCount(data.length);
+
+      const formatted = data.map(p => ({
+        ...p.tickets,
+        price: p.price,
+      }));
+      setSoldTickets(formatted);
     }
   };
 
@@ -83,7 +106,7 @@ export default function SellTickets() {
           <h2>MY OPEN TICKETS FOR SALE</h2>
           <div className="ticket-box">
             <div className="ticket-header">
-              <div></div> {/* This column matches the circle */}
+              <div></div> {/* Icon Column */}
               <div>Event</div>
               <div>Date</div>
               <div>Location</div>
@@ -110,10 +133,12 @@ export default function SellTickets() {
           <h2>MY RECENTLY SOLD TICKETS</h2>
           <div className="ticket-box">
             {soldTickets.length === 0 ? (
-              <div className="ticket-row">No tickets sold yet.</div>
+              <div className="ticket-card" style={{ justifyContent: 'center' }}>
+                No tickets sold yet.
+              </div>
             ) : (
               soldTickets.map((ticket, index) => (
-                <div key={index} className="ticket-row">
+                <div key={index} className="ticket-card">
                   <div className="circle">J</div>
                   <div>{ticket.event_name}</div>
                   <div>{new Date(ticket.date).toLocaleDateString()}</div>
@@ -131,7 +156,7 @@ export default function SellTickets() {
             <h3>TOTAL EARNED MONEY</h3>
             <div className="summary-content">
               <div className="circle">J</div>
-              <div>JANIS ROTH</div>
+              <div>{currentUsername}</div>
               <div>CHF {earned}</div>
             </div>
           </div>
@@ -139,7 +164,7 @@ export default function SellTickets() {
             <h3>TOTAL TICKETS SOLD</h3>
             <div className="summary-content">
               <div className="circle">J</div>
-              <div>JANIS ROTH</div>
+              <div>{currentUsername}</div>
               <div>{soldCount}</div>
             </div>
           </div>

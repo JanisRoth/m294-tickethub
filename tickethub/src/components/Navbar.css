@@ -44,4 +44,67 @@
     padding-left: 0.75rem;
     background-color: rgba(255, 255, 255, 0.05);
     border-left: 3px solid #f15a29;
-}  
+}
+
+.navbar-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#buttonDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
+    background-color: transparent;
+}
+
+.burger-menu {
+    display: none;
+    width: auto;
+    height: auto;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: large;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        position: relative;
+        width: 90%;
+        height: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        box-shadow: none;
+    }
+
+    .navbar-logo {
+        width: 120px;
+        margin-bottom: 0;
+    }
+
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #21242c;
+        padding: 1rem 0;
+        gap: 1rem;
+        margin-top: 1rem;
+        position: static;
+    }
+
+    .navbar-links.mobile-active {
+        display: flex;
+    }
+
+    .burger-menu {
+        display: flex;
+    }
+}

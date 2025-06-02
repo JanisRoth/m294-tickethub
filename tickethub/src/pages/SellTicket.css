@@ -1,0 +1,20 @@
+.sellticket-container {
+  display: flex;
+}
+
+.sellticket-content {
+  margin-left: 200px;
+  padding: 2rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .sellticket-container {
+    flex-direction: column;
+  }
+
+  .sellticket-content {
+    margin-left: 0;
+    padding: 0;
+  }
+}

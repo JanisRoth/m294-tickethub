@@ -84,4 +84,23 @@
     color: white;
     font-weight: bold;
 }
-  
+  .ticketshop-container {
+  display: flex;
+}
+
+.ticketshop-content {
+  margin-left: 200px;
+  padding: 2rem;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .ticketshop-container {
+    flex-direction: column;
+  }
+
+  .ticketshop-content {
+    margin-left: 0;
+    padding: 0;
+  }
+}

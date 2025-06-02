@@ -40,10 +40,11 @@ export default function TicketShop() {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div className='ticketshop-container'>
       <Navbar />
-      <div className="ticket-shop-wrapper">
-        <div className="ticket-shop-container">
+      <div className="ticket-shop-container">
+        <div className="ticket-shop-wrapper">
+
           <h1 className="ticket-shop-title">TICKET SHOP</h1>
           <div className="ticket-shop-search">
             <input className="search-input" placeholder="SEARCH" />
@@ -83,7 +84,10 @@ export default function TicketShop() {
             )}
           </div>
         </div>
+        <div className='ticketshop-content'>
+          <h2 style={{ color: 'white' }}>Ticket Shop Page existiert</h2>
+        </div>
       </div>
     </div>
-  );
+      );
 }

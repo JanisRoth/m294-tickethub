@@ -1,10 +1,11 @@
 import Navbar from '../components/Navbar'
+import './Dashboard.css'
 
 export default function Dashboard() {
   return (
-    <div style={{ display: 'flex' }}>
+    <div className="dashboard-container">
       <Navbar />
-      <div style={{ marginLeft: '250px', padding: '2rem', width: '100%' }}>
+      <div className="dashboard-content">
         <h2 style={{ color: 'white' }}>Dashboard existiert</h2>
       </div>
     </div>

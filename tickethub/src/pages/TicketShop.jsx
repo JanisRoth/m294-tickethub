@@ -1,10 +1,11 @@
 import Navbar from '../components/Navbar'
+import './TicketShop.css'
 
 export default function TicketShop() {
   return (
-    <div style={{ display: 'flex' }}>
+    <div className='ticketshop-container'>
       <Navbar />
-      <div style={{ marginLeft: '250px', padding: '2rem', width: '100%' }}>
+      <div className='ticketshop-content'>
         <h2 style={{ color: 'white' }}>Ticket Shop Page existiert</h2>
       </div>
     </div>

@@ -1,106 +1,107 @@
-.ticket-shop-wrapper {
-    flex-grow: 1;
-    padding: 2rem 3rem;
-    margin-left: 220px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-}
-  
-.ticket-shop-container {
-    max-width: 1000px;
-    width: 100%;
-}
-  
-.ticket-shop-title {
-    text-align: center;
-    color: white;
-    margin-bottom: 1.5rem;
-    font-size: 2rem;
-}
-  
-.ticket-shop-search {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-  
-.search-input {
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    border: none;
-    background-color: #2c2c2c;
-    color: white;
-    width: 250px;
-}
-  
-.filter-select {
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    border: none;
-    background-color: #2c2c2c;
-    color: white;  
-}
-  
-.ticket-shop-table {
-    background-color: #1f1f1f;
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
-}
-  
-.ticket-shop-header,
-.ticket-shop-row {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1.5fr 2fr 1fr 2fr;
-    gap: 1rem;
-    align-items: center;
-    padding: 1rem;
-    color: white;
-}
-  
-.ticket-shop-header {
-    font-weight: bold;
-    border-bottom: 2px solid #444;
-    background-color: #2c2c2c;
-}
-  
-.ticket-shop-row {
-    background-color: #2c2c2c;
-    margin-top: 0.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-  
-.circle {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: #f15a29;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-}
-  .ticketshop-container {
+/* === Layout Grundstruktur === */
+.ticketshop-nav-container {
   display: flex;
-}
-
-.ticketshop-content {
-  margin-left: 200px;
-  padding: 2rem;
+  flex-direction: row;
   width: 100%;
 }
 
+.ticket-shop-container {
+  flex-grow: 1;
+  padding: 2rem;
+  margin-left: 200px;
+  color: #fff;
+}
+
 @media (max-width: 768px) {
-  .ticketshop-container {
+  .ticketshop-nav-container {
     flex-direction: column;
   }
 
-  .ticketshop-content {
+  .ticket-shop-container {
     margin-left: 0;
-    padding: 0;
+    padding: 1rem;
   }
+}
+
+/* === Titel === */
+.ticket-shop-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #f15a29;
+}
+
+/* === Suchleiste + Filter === */
+.ticket-shop-search {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #2b2e32;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.filter-select {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #2b2e32;
+  color: #fff;
+  font-size: 1rem;
+}
+
+/* === Tabellenstruktur === */
+.ticket-shop-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ticket-shop-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.5fr 2fr 1.5fr 2fr;
+  font-weight: bold;
+  padding: 1rem;
+  background-color: #1f2023;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.ticket-shop-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.5fr 2fr 1.5fr 2fr;
+  align-items: center;
+  padding: 1rem;
+  background-color: #2b2e32;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* === Avatar-Kreis === */
+.circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #f15a29;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  font-size: 1.1rem;
+}
+
+/* === Keine Tickets Meldung === */
+.no-tickets {
+  text-align: center;
+  margin-top: 2rem;
+  color: #aaa;
 }

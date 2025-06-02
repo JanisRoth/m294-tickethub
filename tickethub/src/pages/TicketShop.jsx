@@ -15,8 +15,11 @@ export default function TicketShop() {
       .gt('expires_at', new Date().toISOString())
       .order('expires_at', { ascending: sortOrder === 'asc' });
 
-    if (error) console.error(error);
-    else setTickets(data);
+    if (error) {
+      console.error(error);
+    } else {
+      setTickets(data);
+    }
   }, [sortOrder]);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function TicketShop() {
   };
 
   return (
-    <div className='ticketshop-container'>
+    <div className='ticketshop-nav-container'>
       <Navbar />
       <div className="ticket-shop-container">
         <div className="ticket-shop-wrapper">
@@ -84,10 +87,7 @@ export default function TicketShop() {
             )}
           </div>
         </div>
-        <div className='ticketshop-content'>
-          <h2 style={{ color: 'white' }}>Ticket Shop Page existiert</h2>
-        </div>
       </div>
     </div>
-      );
+  );
 }

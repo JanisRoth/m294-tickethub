@@ -10,7 +10,7 @@ export default function TicketShop() {
   const fetchTickets = useCallback(async () => {
     const { data, error } = await supabase
       .from('tickets')
-      .select('id, event_name, date, location, price, expires_at, users(username)')
+      .select('id, event_name, date, location, price, expires_at, user_id, users(username)')
       .eq('status', 'open')
       .gt('expires_at', new Date().toISOString())
       .order('expires_at', { ascending: sortOrder === 'asc' });
@@ -25,6 +25,45 @@ export default function TicketShop() {
   useEffect(() => {
     fetchTickets();
   }, [fetchTickets]);
+
+  const handlePurchase = async (ticket) => {
+    const user = await supabase.auth.getUser();
+    const buyerId = user?.data?.user?.id;
+  
+    if (!buyerId) {
+      alert('Benutzer nicht eingeloggt');
+      return;
+    }
+  
+    const { error: insertError } = await supabase.from('purchases').insert([
+      {
+        ticket_id: ticket.id,
+        buyer_id: buyerId,
+        price: ticket.price,
+        purchase_date: new Date().toISOString(),
+      },
+    ]);
+  
+    if (insertError) {
+      console.error('Fehler beim Erstellen des Kauf-Eintrags:', insertError);
+      alert('Fehler beim Kauf.');
+      return;
+    }
+
+    const { error: updateError } = await supabase
+      .from('tickets')
+      .update({ status: 'sold' })
+      .eq('id', ticket.id);
+  
+    if (updateError) {
+      console.error('Fehler beim Aktualisieren des Ticketstatus:', updateError);
+      alert('Kauf wurde gespeichert, aber Ticket konnte nicht als verkauft markiert werden.');
+      return;
+    }
+  
+    alert('Ticket erfolgreich gekauft!');
+    fetchTickets();
+  };  
 
   const formatTimeRemaining = (expires_at) => {
     const now = new Date();
@@ -43,11 +82,10 @@ export default function TicketShop() {
   };
 
   return (
-    <div className='ticketshop-nav-container'>
+    <div className="ticketshop-nav-container">
       <Navbar />
       <div className="ticket-shop-container">
         <div className="ticket-shop-wrapper">
-
           <h1 className="ticket-shop-title">TICKET SHOP</h1>
           <div className="ticket-shop-search">
             <input className="search-input" placeholder="SEARCH" />
@@ -68,7 +106,8 @@ export default function TicketShop() {
               <div>DATE</div>
               <div>LOCATION</div>
               <div>PRICE</div>
-              <div>TIME REMAINING</div>
+              <div>TIME</div>
+              <div></div>
             </div>
 
             {tickets.length === 0 ? (
@@ -82,6 +121,9 @@ export default function TicketShop() {
                   <div>{ticket.location}</div>
                   <div>CHF {ticket.price}</div>
                   <div>{formatTimeRemaining(ticket.expires_at)}</div>
+                  <div className="buy-cell">
+                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Kaufen</button>
+                  </div>
                 </div>
               ))
             )}

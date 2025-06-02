@@ -1,4 +1,90 @@
-.ticketshop-container {
+.ticket-shop-wrapper {
+    flex-grow: 1;
+    padding: 2rem 3rem;
+    margin-left: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+  
+.ticket-shop-container {
+    max-width: 1000px;
+    width: 100%;
+}
+  
+.ticket-shop-title {
+    text-align: center;
+    color: white;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+  
+.ticket-shop-search {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+  
+.search-input {
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #2c2c2c;
+    color: white;
+    width: 250px;
+}
+  
+.filter-select {
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #2c2c2c;
+    color: white;  
+}
+  
+.ticket-shop-table {
+    background-color: #1f1f1f;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+  
+.ticket-shop-header,
+.ticket-shop-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1.5fr 2fr 1fr 2fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    color: white;
+}
+  
+.ticket-shop-header {
+    font-weight: bold;
+    border-bottom: 2px solid #444;
+    background-color: #2c2c2c;
+}
+  
+.ticket-shop-row {
+    background-color: #2c2c2c;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+  
+.circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #f15a29;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+  .ticketshop-container {
   display: flex;
 }
 

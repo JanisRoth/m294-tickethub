@@ -30,68 +30,22 @@ export default function Dashboard() {
     <div className="dashboard-container">
       <Navbar />
       <div className="dashboard-content">
-        <div style={{
-          flex: 1,
-          padding: '2rem 3rem',
-          marginLeft: '220px',
-          boxSizing: 'border-box',
-          display: 'flex',
-          gap: '2rem',
-        }}>
-          {/* Box: Open Tickets */}
-          <div style={{
-            flex: 2,
-            backgroundColor: '#1f2023',
-            padding: '1.5rem',
-            borderRadius: '12px',
-            height: 'fit-content',
-            boxShadow: '0 3px 10px rgba(0,0,0,0.5)'
-          }}>
+        <div className="dashboard-tickets">
+          <div className="dashboard-ticket-box" style={{ flex: 2 }}>
             <h2 style={{ color: 'white', marginBottom: '1.5rem' }}>My Open Tickets for Sale</h2>
 
             {tickets.map((ticket) => (
-              <div key={ticket.id} style={{
-                backgroundColor: '#2b2e32',
-                padding: '1rem 1.3rem',
-                borderRadius: '10px',
-                marginBottom: '1rem',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
-                color: '#fff'
-              }}>
-                <div style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '50%',
-                  backgroundColor: '#f15a29',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontWeight: 'bold',
-                  fontSize: '1.1rem',
-                  marginRight: '1rem',
-                  flexShrink: 0
-                }}>
+              <div key={ticket.id} className="dashboard-ticket-card">
+                <div className="ticket-user-icon">
                   {ticket.users?.username?.charAt(0).toUpperCase() ?? 'U'}
                 </div>
-
                 <div style={{ flexGrow: 1 }}>{ticket.event_name}</div>
                 <div style={{ fontWeight: 'bold' }}>CHF {ticket.price}</div>
               </div>
             ))}
           </div>
 
-          { }
-          <div style={{
-            flex: 1,
-            backgroundColor: '#1f2023',
-            padding: '1.5rem',
-            borderRadius: '12px',
-            height: 'fit-content',
-            boxShadow: '0 3px 10px rgba(0,0,0,0.5)'
-          }}>
+          <div className="dashboard-ticket-box" style={{ flex: 1 }}>
             <RecentlyBought />
           </div>
         </div>

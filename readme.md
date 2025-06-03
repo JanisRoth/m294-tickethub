@@ -7,3 +7,8 @@ Passwort: 123456
 
 Die Registrierung und Authentifizierung funktioniert, jedoch kann das erstellte Konto nicht gebraucht werden innerhalb der Applikation, da Supabase bei der Authentifizierung keine User-ID vergibt.
 Somit können keine CRUD-Operationen mit diesem User ausgeführt werden, da diese eine User-ID brauchen. Deshalb bitten wir beim Testen das obige Login zu verwenden, darauf sind bereits einige Tickets erstellt.
+
+Im Falle, dass es nicht funktioniert, versuchen sie bitte diese Commands:
+rm -rf node_modules package-lock.json
+npm install
+npm run dev

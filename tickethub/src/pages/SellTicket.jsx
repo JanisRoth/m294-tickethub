@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 import Navbar from '../components/Navbar';
 import SellTicketForm from '../components/SellTicketForm';
@@ -7,12 +7,10 @@ import './SellTicket.css';
 export default function SellTickets() {
   const [openTickets, setOpenTickets] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState('asc');
 
-  useEffect(() => {
-    fetchTickets();
-  }, []);
-
-  const fetchTickets = async () => {
+  const fetchTickets = useCallback(async () => {
     const userResponse = await supabase.auth.getUser();
     const userId = userResponse?.data?.user?.id;
     if (!userId) return;
@@ -21,11 +19,24 @@ export default function SellTickets() {
       .from('tickets')
       .select('id, event_name, date, location, price, expires_at, users(username)')
       .eq('status', 'open')
-      .eq('user_id', userId);
+      .eq('user_id', userId)
+      .order('expires_at', { ascending: sortOrder === 'asc' });
 
     if (!error && data) {
       setOpenTickets(data);
     }
+  }, [sortOrder]);
+
+  useEffect(() => {
+    fetchTickets();
+  }, [fetchTickets]);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSortChange = (e) => {
+    setSortOrder(e.target.value);
   };
 
   const formatTimeRemaining = (expires_at) => {
@@ -43,26 +54,43 @@ export default function SellTickets() {
       .padStart(2, '0')}M ${seconds.toString().padStart(2, '0')}S`;
   };
 
+  const filteredTickets = openTickets.filter((ticket) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      ticket.event_name.toLowerCase().includes(query) ||
+      ticket.location.toLowerCase().includes(query) ||
+      ticket.users?.username?.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="sell-layout">
       <Navbar />
+
       <main className="sell-content">
         <h1 className="sell-title">SELL TICKETS</h1>
 
         <div className="sell-header">
-          <button
-            className="sell-button"
-            onClick={() => setShowForm(true)}
-          >
+          <button className="sell-button" onClick={() => setShowForm(true)}>
             SELL A TICKET
           </button>
         </div>
 
+        {}
         <div className="sell-search">
-          <input className="search-input" placeholder="SEARCH" />
-          <select className="filter-select">
-            <option>Expires next</option>
-            <option>Expires last</option>
+          <input
+            className="search-input"
+            placeholder="SEARCH"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          <select
+            className="filter-select"
+            value={sortOrder}
+            onChange={handleSortChange}
+          >
+            <option value="asc">Expires next</option>
+            <option value="desc">Expires last</option>
           </select>
         </div>
 
@@ -70,7 +98,7 @@ export default function SellTickets() {
           <h2>MY OPEN TICKETS FOR SALE</h2>
           <div className="ticket-box">
             <div className="ticket-header">
-              <div></div> {/* Icon Column */}
+              <div></div>
               <div>Event</div>
               <div>Date</div>
               <div>Location</div>
@@ -78,8 +106,8 @@ export default function SellTickets() {
               <div>Time Left</div>
             </div>
 
-            {openTickets.length > 0 ? (
-              openTickets.map((ticket) => (
+            {filteredTickets.length > 0 ? (
+              filteredTickets.map((ticket) => (
                 <div key={ticket.id} className="ticket-row">
                   <div className="circle">
                     {ticket.users?.username?.charAt(0).toUpperCase() || 'U'}

@@ -1,11 +1,15 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 import Navbar from '../components/Navbar';
+import ConfirmPurchaseModal from '../components/ConfirmPurchaseModal';
 import './TicketShop.css';
 
 export default function TicketShop() {
   const [tickets, setTickets] = useState([]);
   const [sortOrder, setSortOrder] = useState('asc');
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
   const fetchTickets = useCallback(async () => {
     const { data, error } = await supabase
@@ -17,6 +21,8 @@ export default function TicketShop() {
 
     if (error) {
       console.error(error);
+      setMessage('An error occurred while fetching tickets.');
+      setMessageType('error');
     } else {
       setTickets(data);
     }
@@ -26,12 +32,20 @@ export default function TicketShop() {
     fetchTickets();
   }, [fetchTickets]);
 
-  const handlePurchase = async (ticket) => {
+  const handleBuyClick = (ticket) => {
+    setSelectedTicket(ticket);
+    setMessage(null);
+  };
+
+  const handleConfirmPurchase = async (ticket) => {
+    setSelectedTicket(null);
+
     const user = await supabase.auth.getUser();
     const buyerId = user?.data?.user?.id;
 
     if (!buyerId) {
-      alert('Benutzer nicht eingeloggt');
+      setMessage('You must be logged in to buy a ticket.');
+      setMessageType('error');
       return;
     }
 
@@ -45,8 +59,9 @@ export default function TicketShop() {
     ]);
 
     if (insertError) {
-      console.error('Fehler beim Erstellen des Kauf-Eintrags:', insertError);
-      alert('Fehler beim Kauf.');
+      console.error('Error creating purchase record:', insertError);
+      setMessage('Error processing your purchase.');
+      setMessageType('error');
       return;
     }
 
@@ -56,13 +71,22 @@ export default function TicketShop() {
       .eq('id', ticket.id);
 
     if (updateError) {
-      console.error('Fehler beim Aktualisieren des Ticketstatus:', updateError);
-      alert('Kauf wurde gespeichert, aber Ticket konnte nicht als verkauft markiert werden.');
+      console.error('Error updating ticket status:', updateError);
+      setMessage(
+        'Purchase recorded, but could not mark ticket as sold.'
+      );
+      setMessageType('error');
+      fetchTickets();
       return;
     }
 
-    alert('Ticket erfolgreich gekauft!');
+    setMessage('Ticket successfully bought!');
+    setMessageType('success');
     fetchTickets();
+  };
+
+  const handleCancelPurchase = () => {
+    setSelectedTicket(null);
   };
 
   const formatTimeRemaining = (expires_at) => {
@@ -85,10 +109,25 @@ export default function TicketShop() {
     <div className="ticketshop-nav-container">
       <Navbar />
       <div className="ticket-shop-container">
+        {message && (
+          <div
+            className={
+              messageType === 'success'
+                ? 'message-success'
+                : 'message-error'
+            }
+          >
+            {message}
+          </div>
+        )}
+
         <div className="ticket-shop-wrapper">
           <h1 className="ticket-shop-title">TICKET SHOP</h1>
           <div className="ticket-shop-search">
-            <input className="search-input" placeholder="SEARCH" />
+            <input
+              className="search-input"
+              placeholder="SEARCH"
+            />
             <select
               className="filter-select"
               value={sortOrder}
@@ -110,18 +149,34 @@ export default function TicketShop() {
               <div></div>
             </div>
             {tickets.length === 0 ? (
-              <p className="no-tickets">Keine Tickets verfügbar.</p>
+              <p className="no-tickets">No tickets available.</p>
             ) : (
-              tickets.map(ticket => (
-                <div key={ticket.id} className="ticket-shop-row">
-                  <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
+              tickets.map((ticket) => (
+                <div
+                  key={ticket.id}
+                  className="ticket-shop-row"
+                >
+                  <div className="circle">
+                    {ticket.users?.username
+                      ?.charAt(0)
+                      .toUpperCase() ?? '?'}
+                  </div>
                   <div>{ticket.event_name}</div>
-                  <div>{new Date(ticket.date).toLocaleDateString()}</div>
+                  <div>
+                    {new Date(ticket.date).toLocaleDateString()}
+                  </div>
                   <div>{ticket.location}</div>
                   <div>CHF {ticket.price}</div>
-                  <div>{formatTimeRemaining(ticket.expires_at)}</div>
+                  <div>
+                    {formatTimeRemaining(ticket.expires_at)}
+                  </div>
                   <div className="buy-cell">
-                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
+                    <button
+                      className="buy-button"
+                      onClick={() => handleBuyClick(ticket)}
+                    >
+                      Buy
+                    </button>
                   </div>
                 </div>
               ))
@@ -130,22 +185,45 @@ export default function TicketShop() {
 
           <div className="ticket-shop-mobile">
             {tickets.length === 0 ? (
-              <p className="no-tickets">Keine Tickets verfügbar.</p>
+              <p className="no-tickets">No tickets available.</p>
             ) : (
-              tickets.map(ticket => (
-                <div key={ticket.id} className="ticket-shop-card">
+              tickets.map((ticket) => (
+                <div
+                  key={ticket.id}
+                  className="ticket-shop-card"
+                >
                   <div className="card-header">
                     <h2>{ticket.event_name}</h2>
                   </div>
                   <div className="card-body">
-                    <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
-                    <div className="card-info">
-                      <p><strong>CHF:</strong> {ticket.price}</p>
-                      <p><strong>Datum:</strong> {new Date(ticket.date).toLocaleDateString()}</p>
-                      <p><strong>Ort:</strong> {ticket.location}</p>
-                      <p><strong>Restzeit:</strong> {formatTimeRemaining(ticket.expires_at)}</p>
+                    <div className="circle">
+                      {ticket.users?.username
+                        ?.charAt(0)
+                        .toUpperCase() ?? '?'}
                     </div>
-                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
+                    <div className="card-info">
+                      <p>
+                        <strong>CHF:</strong> {ticket.price}
+                      </p>
+                      <p>
+                        <strong>Date:</strong>{' '}
+                        {new Date(ticket.date).toLocaleDateString()}
+                      </p>
+                      <p>
+                        <strong>Location:</strong>{' '}
+                        {ticket.location}
+                      </p>
+                      <p>
+                        <strong>Time Left:</strong>{' '}
+                        {formatTimeRemaining(ticket.expires_at)}
+                      </p>
+                    </div>
+                    <button
+                      className="buy-button"
+                      onClick={() => handleBuyClick(ticket)}
+                    >
+                      Buy
+                    </button>
                   </div>
                 </div>
               ))
@@ -153,6 +231,13 @@ export default function TicketShop() {
           </div>
         </div>
       </div>
+
+      {}
+      <ConfirmPurchaseModal
+        ticket={selectedTicket}
+        onConfirm={handleConfirmPurchase}
+        onCancel={handleCancelPurchase}
+      />
     </div>
   );
 }

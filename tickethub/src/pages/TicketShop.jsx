@@ -99,7 +99,6 @@ export default function TicketShop() {
             </select>
           </div>
 
-          {/* Desktop View */}
           <div className="ticket-shop-table">
             <div className="ticket-shop-header">
               <div>SELLER</div>
@@ -110,7 +109,6 @@ export default function TicketShop() {
               <div>TIME</div>
               <div></div>
             </div>
-
             {tickets.length === 0 ? (
               <p className="no-tickets">Keine Tickets verfügbar.</p>
             ) : (
@@ -123,14 +121,13 @@ export default function TicketShop() {
                   <div>CHF {ticket.price}</div>
                   <div>{formatTimeRemaining(ticket.expires_at)}</div>
                   <div className="buy-cell">
-                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Kaufen</button>
+                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
                   </div>
                 </div>
               ))
             )}
           </div>
 
-          {/* Mobile View */}
           <div className="ticket-shop-mobile">
             {tickets.length === 0 ? (
               <p className="no-tickets">Keine Tickets verfügbar.</p>
@@ -148,7 +145,7 @@ export default function TicketShop() {
                       <p><strong>Ort:</strong> {ticket.location}</p>
                       <p><strong>Restzeit:</strong> {formatTimeRemaining(ticket.expires_at)}</p>
                     </div>
-                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Kaufen</button>
+                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
                   </div>
                 </div>
               ))

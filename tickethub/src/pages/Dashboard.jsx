@@ -66,11 +66,12 @@ export default function Dashboard() {
     setRevenue(earnedTotal - spentTotal);
   
     const { data: soldTicketsData, error: soldTicketsErr } = await supabase
-      .from('purchases')
-      .select('id, price, purchase_date, tickets(id, user_id, event_name, date, location)')
-      .eq('tickets.user_id', userId)
-      .order('purchase_date', { ascending: false })
-      .limit(3);
+    .from('tickets')
+    .select('id, event_name, date, location, price')
+    .eq('user_id', userId)
+    .eq('status', 'sold')
+    .order('date', { ascending: false })
+    .limit(3);  
   
     if (!soldTicketsErr) {
       setSoldTickets(soldTicketsData || []);
@@ -96,7 +97,7 @@ export default function Dashboard() {
       </div>
         <div className="dashboard-tickets">
           <div className="dashboard-ticket-box" style={{ flex: 2 }}>
-            <h2 style={{ color: 'white', marginBottom: '1.5rem' }}>My Open Tickets for Sale</h2>
+            <h2 style={{ color: 'white', marginBottom: '1.5rem' }}>Newest open Tickets</h2>
             {tickets.map((ticket) => (
               <div key={ticket.id} className="dashboard-ticket-card">
                 <div className="ticket-user-icon">
@@ -141,15 +142,15 @@ export default function Dashboard() {
           {soldTickets.length === 0 ? (
             <p style={{ color: 'white' }}>No tickets sold yet.</p>
           ) : (
-            soldTickets.map((entry) => (
-              <div key={entry.id} className="dashboard-ticket-card">
+            soldTickets.map((ticket) => (
+              <div key={ticket.id} className="dashboard-ticket-card">
                 <div className="ticket-user-icon">{username.charAt(0).toUpperCase()}</div>
-                <div>{entry.tickets?.event_name}</div>
-                <div>{entry.tickets?.location}</div>
-                <div>{new Date(entry.tickets?.date).toLocaleDateString()}</div>
-                <div>CHF {entry.price}</div>
+                <div>{ticket.event_name}</div>
+                <div>{ticket.location}</div>
+                <div>{new Date(ticket.date).toLocaleDateString()}</div>
+                <div>CHF {ticket.price}</div>
               </div>
-            ))
+            ))            
           )}
         </div>
       </div>

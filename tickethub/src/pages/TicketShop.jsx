@@ -104,18 +104,15 @@ export default function TicketShop() {
               <p className="no-tickets">Keine Tickets verfügbar.</p>
             ) : (
               tickets.map(ticket => (
-                <div key={ticket.id} className="ticket-shop-card">
-                  <div className="card-header">
-                    <h2>{ticket.event_name}</h2>
-                  </div>
-                  <div className="card-body">
-                    <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
-                    <div className="card-info">
-                      <p><strong>CHF {ticket.price}</strong> – {new Date(ticket.date).toLocaleDateString()}</p>
-                      <p>{ticket.location}</p>
-                      <p>{formatTimeRemaining(ticket.expires_at)}</p>
-                    </div>
-                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Kaufen</button>
+                <div key={ticket.id} className="ticket-shop-row">
+                  <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
+                  <div>{ticket.event_name}</div>
+                  <div>{new Date(ticket.date).toLocaleDateString()}</div>
+                  <div>{ticket.location}</div>
+                  <div>CHF {ticket.price}</div>
+                  <div>{formatTimeRemaining(ticket.expires_at)}</div>
+                  <div className="buy-cell">
+                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
                   </div>
                 </div>
               ))

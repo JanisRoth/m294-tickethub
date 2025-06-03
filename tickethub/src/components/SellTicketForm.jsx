@@ -47,7 +47,7 @@ export default function SellTicketForm({ onClose, onCreated }) {
     <div className="overlay">
       <div className="form-modal">
         <button className="close-button" onClick={onClose}>✖</button>
-        <h2>Ticket verkaufen</h2>
+        <h2>Sell ticket</h2>
         <form onSubmit={handleSubmit}>
           <label>Event Name</label>
           <input
@@ -56,28 +56,28 @@ export default function SellTicketForm({ onClose, onCreated }) {
             onChange={(e) => setEventName(e.target.value)}
             required
           />
-          <label>Ort</label>
+          <label>Place</label>
           <input
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             required
           />
-          <label>Datum</label>
+          <label>Date</label>
           <input
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
           />
-          <label>Preis (CHF)</label>
+          <label>Price (CHF)</label>
           <input
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             required
           />
-          <label>Gültig bis</label>
+          <label>Valid until</label>
           <input
             type="datetime-local"
             value={expiresAt}

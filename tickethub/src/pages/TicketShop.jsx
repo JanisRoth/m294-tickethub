@@ -29,12 +29,12 @@ export default function TicketShop() {
   const handlePurchase = async (ticket) => {
     const user = await supabase.auth.getUser();
     const buyerId = user?.data?.user?.id;
-  
+
     if (!buyerId) {
       alert('Benutzer nicht eingeloggt');
       return;
     }
-  
+
     const { error: insertError } = await supabase.from('purchases').insert([
       {
         ticket_id: ticket.id,
@@ -43,7 +43,7 @@ export default function TicketShop() {
         purchase_date: new Date().toISOString(),
       },
     ]);
-  
+
     if (insertError) {
       console.error('Fehler beim Erstellen des Kauf-Eintrags:', insertError);
       alert('Fehler beim Kauf.');
@@ -54,16 +54,16 @@ export default function TicketShop() {
       .from('tickets')
       .update({ status: 'sold' })
       .eq('id', ticket.id);
-  
+
     if (updateError) {
       console.error('Fehler beim Aktualisieren des Ticketstatus:', updateError);
       alert('Kauf wurde gespeichert, aber Ticket konnte nicht als verkauft markiert werden.');
       return;
     }
-  
+
     alert('Ticket erfolgreich gekauft!');
     fetchTickets();
-  };  
+  };
 
   const formatTimeRemaining = (expires_at) => {
     const now = new Date();
@@ -100,28 +100,21 @@ export default function TicketShop() {
           </div>
 
           <div className="ticket-shop-table">
-            <div className="ticket-shop-header">
-              <div>SELLER</div>
-              <div>EVENT</div>
-              <div>DATE</div>
-              <div>LOCATION</div>
-              <div>PRICE</div>
-              <div>TIME</div>
-              <div></div>
-            </div>
-
             {tickets.length === 0 ? (
               <p className="no-tickets">Keine Tickets verfügbar.</p>
             ) : (
               tickets.map(ticket => (
-                <div key={ticket.id} className="ticket-shop-row">
-                  <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
-                  <div>{ticket.event_name}</div>
-                  <div>{new Date(ticket.date).toLocaleDateString()}</div>
-                  <div>{ticket.location}</div>
-                  <div>CHF {ticket.price}</div>
-                  <div>{formatTimeRemaining(ticket.expires_at)}</div>
-                  <div className="buy-cell">
+                <div key={ticket.id} className="ticket-shop-card">
+                  <div className="card-header">
+                    <h2>{ticket.event_name}</h2>
+                  </div>
+                  <div className="card-body">
+                    <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
+                    <div className="card-info">
+                      <p><strong>CHF {ticket.price}</strong> – {new Date(ticket.date).toLocaleDateString()}</p>
+                      <p>{ticket.location}</p>
+                      <p>{formatTimeRemaining(ticket.expires_at)}</p>
+                    </div>
                     <button className="buy-button" onClick={() => handlePurchase(ticket)}>Kaufen</button>
                   </div>
                 </div>

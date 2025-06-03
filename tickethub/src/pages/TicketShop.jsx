@@ -6,6 +6,7 @@ import './TicketShop.css';
 export default function TicketShop() {
   const [tickets, setTickets] = useState([]);
   const [sortOrder, setSortOrder] = useState('asc');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchTickets = useCallback(async () => {
     const { data, error } = await supabase
@@ -88,7 +89,13 @@ export default function TicketShop() {
         <div className="ticket-shop-wrapper">
           <h1 className="ticket-shop-title">TICKET SHOP</h1>
           <div className="ticket-shop-search">
-            <input className="search-input" placeholder="SEARCH" />
+            <input
+              className="search-input"
+              placeholder="SEARCH"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+
             <select
               className="filter-select"
               value={sortOrder}
@@ -112,19 +119,25 @@ export default function TicketShop() {
             {tickets.length === 0 ? (
               <p className="no-tickets">Keine Tickets verfügbar.</p>
             ) : (
-              tickets.map(ticket => (
-                <div key={ticket.id} className="ticket-shop-row">
-                  <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
-                  <div>{ticket.event_name}</div>
-                  <div>{new Date(ticket.date).toLocaleDateString()}</div>
-                  <div>{ticket.location}</div>
-                  <div>CHF {ticket.price}</div>
-                  <div>{formatTimeRemaining(ticket.expires_at)}</div>
-                  <div className="buy-cell">
-                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
+              tickets
+                .filter(ticket =>
+                  ticket.event_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  ticket.location.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map(ticket => (
+
+                  <div key={ticket.id} className="ticket-shop-row">
+                    <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
+                    <div>{ticket.event_name}</div>
+                    <div>{new Date(ticket.date).toLocaleDateString()}</div>
+                    <div>{ticket.location}</div>
+                    <div>CHF {ticket.price}</div>
+                    <div>{formatTimeRemaining(ticket.expires_at)}</div>
+                    <div className="buy-cell">
+                      <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
+                    </div>
                   </div>
-                </div>
-              ))
+                ))
             )}
           </div>
 
@@ -132,7 +145,12 @@ export default function TicketShop() {
             {tickets.length === 0 ? (
               <p className="no-tickets">Keine Tickets verfügbar.</p>
             ) : (
-              tickets.map(ticket => (
+              tickets
+                .filter(ticket =>
+                  ticket.event_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  ticket.location.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map(ticket => (
                 <div key={ticket.id} className="ticket-shop-card">
                   <div className="card-header">
                     <h2>{ticket.event_name}</h2>

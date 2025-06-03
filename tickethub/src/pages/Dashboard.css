@@ -1,51 +1,32 @@
 .dashboard-container {
     display: flex;
-}
-
-.dashboard-content {
-    margin-left: 220px;
-    padding: 2rem;
-    width: 100%;
-    display: 'flex';
-}
-
-.dashboard-tickets {
-    flex: 1;
-    padding: '2rem 3rem';
-    margin-left: '220px';
-    box-sizing: 'border-box';
-    display: 'flex';
-    gap: '2rem';
-}
-
-.dashboard-container {
-    display: flex;
     min-height: 100vh;
     background-color: #181a1e;
 }
-
+  
 .dashboard-content {
     flex: 1;
     padding: 2rem;
     margin-left: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .dashboard-tickets {
     display: flex;
-    flex-direction: row;
     gap: 2rem;
     flex-wrap: wrap;
 }
-
+  
 .dashboard-ticket-box {
-  background-color: #1f2023;
-  padding: 1.5rem;
-  border-radius: 12px;
-  height: fit-content;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-  flex: 1;
+    background-color: #1f2023;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    flex: 1;
 }
-
+  
 .dashboard-ticket-card {
     background-color: #2b2e32;
     padding: 1rem 1.3rem;
@@ -57,7 +38,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     color: #fff;
 }
-
+  
 .ticket-user-icon {
     width: 38px;
     height: 38px;
@@ -71,32 +52,45 @@
     margin-right: 1rem;
     flex-shrink: 0;
 }
-
-@media (max-width: 768px) {
-    .dashboard-container {
-        flex-direction: column;
-    }
-
-    .dashboard-content {
-        margin-left: 0;
-        padding: 0;
-    }
-
-    .dashboard-tickets {
-        flex: 1;
-        padding: '2rem 3rem';
-        margin-left: '220px';
-        box-sizing: 'border-box';
-        display: 'flex';
-        gap: '2rem';
-    }
-
-    .dashboard-tickets {
-        flex-direction: column;
-    }
-
-    .dashboard-content {
-        margin-left: 0;
-        padding: 0;
-    }
+  
+.dashboard-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
 }
+  
+.summary-box {
+    background-color: #1f2023;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+}
+  
+.summary-box h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
+}
+  
+.summary-box p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+}
+  
+@media (max-width: 1024px) {
+    .dashboard-content {
+      margin-left: 0;
+      padding: 1rem;
+    }
+  
+    .dashboard-tickets {
+      flex-direction: column;
+    }
+  
+    .dashboard-summary {
+      grid-template-columns: 1fr;
+    }
+}  

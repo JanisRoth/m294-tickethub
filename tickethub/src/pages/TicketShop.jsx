@@ -9,7 +9,8 @@ export default function TicketShop() {
   const [sortOrder, setSortOrder] = useState('asc');
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+  const [messageType, setMessageType] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fetchTickets = useCallback(async () => {
     const { data, error } = await supabase
@@ -72,9 +73,7 @@ export default function TicketShop() {
 
     if (updateError) {
       console.error('Error updating ticket status:', updateError);
-      setMessage(
-        'Purchase recorded, but could not mark ticket as sold.'
-      );
+      setMessage('Purchase recorded, but could not mark ticket as sold.');
       setMessageType('error');
       fetchTickets();
       return;
@@ -104,6 +103,14 @@ export default function TicketShop() {
       .toString()
       .padStart(2, '0')}M ${seconds.toString().padStart(2, '0')}S`;
   };
+  const filteredTickets = tickets.filter((ticket) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      ticket.event_name.toLowerCase().includes(query) ||
+      ticket.location.toLowerCase().includes(query) ||
+      ticket.users?.username?.toLowerCase().includes(query)
+    );
+  });
 
   return (
     <div className="ticketshop-nav-container">
@@ -112,9 +119,7 @@ export default function TicketShop() {
         {message && (
           <div
             className={
-              messageType === 'success'
-                ? 'message-success'
-                : 'message-error'
+              messageType === 'success' ? 'message-success' : 'message-error'
             }
           >
             {message}
@@ -127,6 +132,8 @@ export default function TicketShop() {
             <input
               className="search-input"
               placeholder="SEARCH"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <select
               className="filter-select"
@@ -148,28 +155,19 @@ export default function TicketShop() {
               <div>TIME</div>
               <div></div>
             </div>
-            {tickets.length === 0 ? (
+            {filteredTickets.length === 0 ? (
               <p className="no-tickets">No tickets available.</p>
             ) : (
-              tickets.map((ticket) => (
-                <div
-                  key={ticket.id}
-                  className="ticket-shop-row"
-                >
+              filteredTickets.map((ticket) => (
+                <div key={ticket.id} className="ticket-shop-row">
                   <div className="circle">
-                    {ticket.users?.username
-                      ?.charAt(0)
-                      .toUpperCase() ?? '?'}
+                    {ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}
                   </div>
                   <div>{ticket.event_name}</div>
-                  <div>
-                    {new Date(ticket.date).toLocaleDateString()}
-                  </div>
+                  <div>{new Date(ticket.date).toLocaleDateString()}</div>
                   <div>{ticket.location}</div>
                   <div>CHF {ticket.price}</div>
-                  <div>
-                    {formatTimeRemaining(ticket.expires_at)}
-                  </div>
+                  <div>{formatTimeRemaining(ticket.expires_at)}</div>
                   <div className="buy-cell">
                     <button
                       className="buy-button"
@@ -184,22 +182,17 @@ export default function TicketShop() {
           </div>
 
           <div className="ticket-shop-mobile">
-            {tickets.length === 0 ? (
+            {filteredTickets.length === 0 ? (
               <p className="no-tickets">No tickets available.</p>
             ) : (
-              tickets.map((ticket) => (
-                <div
-                  key={ticket.id}
-                  className="ticket-shop-card"
-                >
+              filteredTickets.map((ticket) => (
+                <div key={ticket.id} className="ticket-shop-card">
                   <div className="card-header">
                     <h2>{ticket.event_name}</h2>
                   </div>
                   <div className="card-body">
                     <div className="circle">
-                      {ticket.users?.username
-                        ?.charAt(0)
-                        .toUpperCase() ?? '?'}
+                      {ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}
                     </div>
                     <div className="card-info">
                       <p>
@@ -210,8 +203,7 @@ export default function TicketShop() {
                         {new Date(ticket.date).toLocaleDateString()}
                       </p>
                       <p>
-                        <strong>Location:</strong>{' '}
-                        {ticket.location}
+                        <strong>Location:</strong> {ticket.location}
                       </p>
                       <p>
                         <strong>Time Left:</strong>{' '}
@@ -232,7 +224,6 @@ export default function TicketShop() {
         </div>
       </div>
 
-      {}
       <ConfirmPurchaseModal
         ticket={selectedTicket}
         onConfirm={handleConfirmPurchase}

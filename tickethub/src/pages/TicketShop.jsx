@@ -122,7 +122,7 @@ export default function TicketShop() {
                   <div>CHF {ticket.price}</div>
                   <div>{formatTimeRemaining(ticket.expires_at)}</div>
                   <div className="buy-cell">
-                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Kaufen</button>
+                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
                   </div>
                 </div>
               ))

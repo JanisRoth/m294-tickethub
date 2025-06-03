@@ -139,6 +139,31 @@
   display: none;
 }
 
+.message-success {
+    background-color: #2d4a2a;
+    color: #b7f5a9;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1rem 2rem;
+    text-align: center;
+}
+  
+.message-error {
+    background-color: #4a2a2a;
+    color: #f5a9a9;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1rem 2rem;
+    text-align: center;
+}
+  
+.ticket-shop-container {
+    flex-grow: 1;
+    padding: 2rem;
+    margin-left: 220px;
+    color: #fff;
+}
+
 @media (max-width: 768px) {
   .ticketshop-nav-container {
     flex-direction: column;

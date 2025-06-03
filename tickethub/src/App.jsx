@@ -22,7 +22,7 @@ function App() {
                 <h2>{mode === 'login' ? 'LOG IN' : 'SIGN UP'}</h2>
                 {mode === 'login' ? <LoginForm /> : <RegisterForm />}
                 <p className="switch">
-                  {mode === 'login' ? 'Noch kein Konto?' : 'Schon registriert?'}{' '}
+                  {mode === 'login' ? 'No profile yet?' : 'Already registered?'}{' '}
                   <button
                     className="link-button"
                     onClick={() => setMode(mode === 'login' ? 'register' : 'login')}

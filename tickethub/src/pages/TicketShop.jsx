@@ -100,6 +100,15 @@ export default function TicketShop() {
           </div>
 
           <div className="ticket-shop-table">
+            <div className="ticket-shop-header">
+              <div>SELLER</div>
+              <div>EVENT</div>
+              <div>DATE</div>
+              <div>LOCATION</div>
+              <div>PRICE</div>
+              <div>TIME</div>
+              <div></div>
+            </div>
             {tickets.length === 0 ? (
               <p className="no-tickets">Keine Tickets verfügbar.</p>
             ) : (
@@ -112,6 +121,30 @@ export default function TicketShop() {
                   <div>CHF {ticket.price}</div>
                   <div>{formatTimeRemaining(ticket.expires_at)}</div>
                   <div className="buy-cell">
+                    <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="ticket-shop-mobile">
+            {tickets.length === 0 ? (
+              <p className="no-tickets">Keine Tickets verfügbar.</p>
+            ) : (
+              tickets.map(ticket => (
+                <div key={ticket.id} className="ticket-shop-card">
+                  <div className="card-header">
+                    <h2>{ticket.event_name}</h2>
+                  </div>
+                  <div className="card-body">
+                    <div className="circle">{ticket.users?.username?.charAt(0).toUpperCase() ?? '?'}</div>
+                    <div className="card-info">
+                      <p><strong>CHF:</strong> {ticket.price}</p>
+                      <p><strong>Datum:</strong> {new Date(ticket.date).toLocaleDateString()}</p>
+                      <p><strong>Ort:</strong> {ticket.location}</p>
+                      <p><strong>Restzeit:</strong> {formatTimeRemaining(ticket.expires_at)}</p>
+                    </div>
                     <button className="buy-button" onClick={() => handlePurchase(ticket)}>Buy</button>
                   </div>
                 </div>

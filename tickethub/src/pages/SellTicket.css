@@ -34,10 +34,18 @@
 
 .sell-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+.sell-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #fff;
+  text-align: center;
 }
 
 .sell-button {

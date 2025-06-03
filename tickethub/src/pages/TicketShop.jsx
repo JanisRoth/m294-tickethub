@@ -94,8 +94,8 @@ export default function TicketShop() {
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
             >
-              <option value="asc">Läuft als nächstes ab</option>
-              <option value="desc">Läuft am längsten</option>
+              <option value="asc">Expires next</option>
+              <option value="desc">Expires last</option>
             </select>
           </div>
 

@@ -87,8 +87,8 @@ export default function SellTickets() {
     <div className="sell-layout">
       <Navbar />
       <main className="sell-content">
+      <h1 className="sell-title">SELL TICKETS</h1>
         <div className="sell-header">
-          <h1>SELL TICKETS</h1>
           <button className="sell-button" onClick={() => setShowForm(true)}>
             SELL A TICKET
           </button>
@@ -97,8 +97,8 @@ export default function SellTickets() {
         <div className="sell-search">
           <input className="search-input" placeholder="SEARCH" />
           <select className="filter-select">
-            <option>Läuft als nächstes ab</option>
-            <option>Läuft am längsten</option>
+            <option>Expires next</option>
+            <option>Expires last</option>
           </select>
         </div>
 

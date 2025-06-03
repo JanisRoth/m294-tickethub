@@ -7,7 +7,7 @@
 .ticket-shop-container {
   flex-grow: 1;
   padding: 2rem;
-  margin-left: 200px;
+  margin-left: 220px;
   color: #fff;
 }
 
@@ -26,7 +26,8 @@
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 2rem;
-  color: #f15a29;
+  color: #fff;
+  text-align: center;
 }
 
 .ticket-shop-search {

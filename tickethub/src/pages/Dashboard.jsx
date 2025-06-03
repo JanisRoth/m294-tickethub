@@ -86,12 +86,14 @@ export default function Dashboard() {
       setUsername(userData.data.username);
     }
   };
-  
 
   return (
     <div className="dashboard-container">
       <Navbar />
       <div className="dashboard-content">
+      <div className="dashboard-header">
+        <p className="dashboard-title">Dashboard</p>
+      </div>
         <div className="dashboard-tickets">
           <div className="dashboard-ticket-box" style={{ flex: 2 }}>
             <h2 style={{ color: 'white', marginBottom: '1.5rem' }}>My Open Tickets for Sale</h2>

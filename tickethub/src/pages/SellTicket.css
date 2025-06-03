@@ -1,5 +1,6 @@
 .sell-layout {
   display: flex;
+  flex-direction: row;
   background-color: #181818;
   min-height: 100vh;
   color: white;
@@ -98,4 +99,89 @@
   align-items: center;
   justify-content: center;
   font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .sell-layout {
+    flex-direction: column;
+  }
+
+  .sell-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .sell-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .sell-header {
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .sell-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .sell-search {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem auto;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .filter-select {
+    display: none;
+  }
+
+  .sell-search::after {
+    content: '▾';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+    font-size: 0.9rem;
+    pointer-events: none;
+  }
+
+  .ticket-header {
+    display: none;
+  }
+
+  .ticket-box {
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .ticket-section {
+    margin-bottom: 1rem;
+  }
+
+  .ticket-row {
+    grid-template-columns: 40px 2fr 1fr;
+    padding: 0.75rem 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .ticket-row > div:nth-child(3),
+  .ticket-row > div:nth-child(4),
+  .ticket-row > div:nth-child(6) {
+    display: none;
+  }
+
+  .ticket-row {
+    background-color: #2c2c2c;
+    border-radius: 8px;
+  }
 }

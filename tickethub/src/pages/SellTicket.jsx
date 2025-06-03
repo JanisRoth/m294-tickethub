@@ -6,36 +6,16 @@ import './SellTicket.css';
 
 export default function SellTickets() {
   const [openTickets, setOpenTickets] = useState([]);
-  const [soldTickets, setSoldTickets] = useState([]);
-  const [earned, setEarned] = useState(0);
-  const [soldCount, setSoldCount] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const [currentUsername, setCurrentUsername] = useState('User');
 
   useEffect(() => {
     fetchTickets();
-    fetchStats();
-    fetchUsername();
   }, []);
 
-  const fetchUsername = async () => {
-    const { data, error } = await supabase.auth.getUser();
-    if (!error && data?.user?.id) {
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('username')
-        .eq('id', data.user.id)
-        .single();
-
-      if (!userError && userData) {
-        setCurrentUsername(userData.username);
-      }
-    }
-  };
-
   const fetchTickets = async () => {
-    const user = await supabase.auth.getUser();
-    const userId = user?.data?.user?.id;
+    const userResponse = await supabase.auth.getUser();
+    const userId = userResponse?.data?.user?.id;
+    if (!userId) return;
 
     const { data, error } = await supabase
       .from('tickets')
@@ -43,28 +23,8 @@ export default function SellTickets() {
       .eq('status', 'open')
       .eq('user_id', userId);
 
-    if (!error) setOpenTickets(data);
-  };
-
-  const fetchStats = async () => {
-    const user = await supabase.auth.getUser();
-    const userId = user?.data?.user?.id;
-
-    const { data, error } = await supabase
-      .from('purchases')
-      .select('price, ticket_id, tickets(event_name, date, location)')
-      .eq('seller_id', userId);
-
     if (!error && data) {
-      const total = data.reduce((acc, cur) => acc + (cur.price || 0), 0);
-      setEarned(total);
-      setSoldCount(data.length);
-
-      const formatted = data.map(p => ({
-        ...p.tickets,
-        price: p.price,
-      }));
-      setSoldTickets(formatted);
+      setOpenTickets(data);
     }
   };
 
@@ -87,9 +47,13 @@ export default function SellTickets() {
     <div className="sell-layout">
       <Navbar />
       <main className="sell-content">
-      <h1 className="sell-title">SELL TICKETS</h1>
+        <h1 className="sell-title">SELL TICKETS</h1>
+
         <div className="sell-header">
-          <button className="sell-button" onClick={() => setShowForm(true)}>
+          <button
+            className="sell-button"
+            onClick={() => setShowForm(true)}
+          >
             SELL A TICKET
           </button>
         </div>
@@ -114,61 +78,26 @@ export default function SellTickets() {
               <div>Time Left</div>
             </div>
 
-            {openTickets.map(ticket => (
-              <div key={ticket.id} className="ticket-row">
-                <div className="circle">
-                  {ticket.users?.username?.charAt(0).toUpperCase() || 'J'}
-                </div>
-                <div>{ticket.event_name}</div>
-                <div>{new Date(ticket.date).toLocaleDateString()}</div>
-                <div>{ticket.location}</div>
-                <div>CHF {ticket.price}</div>
-                <div>{formatTimeRemaining(ticket.expires_at)}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="ticket-section">
-          <h2>MY RECENTLY SOLD TICKETS</h2>
-          <div className="ticket-box">
-            {soldTickets.length === 0 ? (
-              <div className="ticket-card" style={{ justifyContent: 'center' }}>
-                No tickets sold yet.
-              </div>
-            ) : (
-              soldTickets.map((ticket, index) => (
-                <div key={index} className="ticket-card">
-                  <div className="circle">J</div>
+            {openTickets.length > 0 ? (
+              openTickets.map((ticket) => (
+                <div key={ticket.id} className="ticket-row">
+                  <div className="circle">
+                    {ticket.users?.username?.charAt(0).toUpperCase() || 'U'}
+                  </div>
                   <div>{ticket.event_name}</div>
                   <div>{new Date(ticket.date).toLocaleDateString()}</div>
                   <div>{ticket.location}</div>
                   <div>CHF {ticket.price}</div>
-                  <div className="circle buyer">B</div>
+                  <div>{formatTimeRemaining(ticket.expires_at)}</div>
                 </div>
               ))
+            ) : (
+              <div className="ticket-row" style={{ justifyContent: 'center' }}>
+                No open tickets found.
+              </div>
             )}
           </div>
         </section>
-
-        <div className="summary-boxes">
-          <div className="summary-box">
-            <h3>TOTAL EARNED MONEY</h3>
-            <div className="summary-content">
-              <div className="circle">J</div>
-              <div>{currentUsername}</div>
-              <div>CHF {earned}</div>
-            </div>
-          </div>
-          <div className="summary-box">
-            <h3>TOTAL TICKETS SOLD</h3>
-            <div className="summary-content">
-              <div className="circle">J</div>
-              <div>{currentUsername}</div>
-              <div>{soldCount}</div>
-            </div>
-          </div>
-        </div>
       </main>
 
       {showForm && <SellTicketForm onClose={() => setShowForm(false)} />}
